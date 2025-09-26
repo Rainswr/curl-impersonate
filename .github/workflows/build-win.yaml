@@ -10,7 +10,6 @@ on:
   pull_request:
     branches:
       - main
-  workflow_dispatch:
 
 permissions:
   contents: write
@@ -73,17 +72,9 @@ jobs:
 
       - name: Build
         shell: cmd
-        run: |
-          set BUILD_SHARED_LIBS=ON
-          ./win/build.bat ${{ matrix.sys }}
+        run: ./win/build.bat ${{ matrix.sys }}
         env:
           DISABLE_ASM_ARM64: ${{ matrix.env == 'arm64' && 'true' || 'false' }}
-
-      - name: Copy DLL
-        shell: bash
-        run: |
-          cp ./build/lib/libcurl.dll ./packages/ || true
-          cp ./build/lib/libcurl.lib ./packages/ || true
 
       - name: Build tarball
         shell: bash
